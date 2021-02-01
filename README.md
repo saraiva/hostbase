@@ -1,53 +1,33 @@
-
-~~~~~~~~~~~~~~~~~~ Hostbase project By Koala @ sécurité-wifi.com @ wifi-libre.com @ kali-linux.fr ~~~~~~~~~~~~~~~~~~
-
-Welcome to the hostbase project// Bienvenido en hostbase// Bienvenu sur le projet hostbase.
-
-Official page on: https://www.facebook.com/Rogue-ap-hostbase-785509138309015/ if you like the project share it as possible as you can.
-
-Hostbase automate encrypted wps rogue AP and DoS tracking AP if channel change.
-
-For kali-linux users:
-
-Espana/Spain: https://github.com/Koala633/hostbase/blob/master/hostbase-1.1.tar.gz
-
-France/French: https://github.com/Koala633/hostbase/blob/master/hostbase-1.1FR.tar.gz
-
-English: https://github.com/Koala633/hostbase/blob/master/hostbase-1.1EN.tar.gz
-
-
-
-Por los usarios de wifislax:
-
-https://github.com/Koala633/hostbase/blob/master/wifislaxairbase.tar.gz
-
-https://github.com/Koala633/hostbase/blob/master/wifislax.tar.gz
-
-Mas informaciones por wifislax aqui: 
-
-https://foro.seguridadwireless.net/wifislax/hostbase-atacando-2-redes-al-mismo-tiempo/msg365822/
-
-
-
-
-
-
-full guide install using kali-linux:
-
-Step 1__________________________________________________________
-
-apt-get install -y build-essential upgrade-system subversion wget g++ iptables iptables-dev pavucontrol ffmpeg sqlite3 libsqlite3-dev libssl-dev libnl-3-dev libnl-genl-3-dev dsniff hostapd isc-dhcp-server pkg-config xterm freeradius apache2 php libapache2-mod-php php-mcrypt php-cli tcpdump scapy vokoscreen wireshark python-twisted bridge-utils devscripts gengetopt autoconf libtool make
-
-
-
-Step 2____________________________________________________________
-
-Hostbase use hostapd wich is a deamon to create access point.To show if your wifi card is compatible with hostapd:
-
+# Hostbase project By Koala @ sécurité-wifi.com @ wifi-libre.com @ kali-linux.fr
+## Welcome to the hostbase project! - ¡Bienvenidos al proyecto hostbase! - Bienvenue sur le projet hostbase! 
+Official page in [https://www.facebook.com/Rogue-ap-hostbase-785509138309015/](Facebook)
+If you like the project share it as much as you can. 
+Hostbase automates encrypted WPS Rogue AP and DoS, even if  the AP switch to a different channel.
+### For kali-linux users:
+ Hostbase is available in French, Spanish and English. 
+Locate your shell in the directory of the language of your choice. For example, to execute Hostbase in Spanish, do:
+ ```bash
+ cd hostbase/hostbase-1.3ES/
+ ```
+ ### Para usuarios de wifislax
+ Usen la versión especial que se encuentra en la carpeta dedicada:
+ ```bash
+ cd hostbase/hostbase-1.1Wifislax
+ ```
+ 
+ Más información en [https://foro.seguridadwireless.net/wifislax/hostbase-atacando-2-redes-al-mismo-tiempo/msg365822/](seguridadwireless) 
+## Full guide install using kali-linux:
+### Step 1__________________________________________________________
+```bash
+apt-get install -y build-essential upgrade-system subversion wget g++ iptables pavucontrol ffmpeg sqlite3 libsqlite3-dev libssl-dev libnl-3-dev libnl-genl-3-dev dsniff hostapd isc-dhcp-server pkg-config xterm freeradius apache2 php libapache2-mod-php php-cli tcpdump scapy vokoscreen wireshark bridge-utils devscripts gengetopt autoconf libtool make
+```
+### Step 2____________________________________________________________
+Hostbase use hostapd, a deamon that creates access points.To check if your wifi card is compatible with hostapd:
+```bash
 iw list | grep "Supported interface modes" -A 8
-
-If there is compatibility you will show that:
-
+```
+If there is compatibility you will see something like that:
+```bash
 Supported interface modes:
 
 		 * IBSS
@@ -63,21 +43,21 @@ Supported interface modes:
 		 * monitor
 		 
 		 * mesh point
-		 
+``` 
 
-If your card is not compatible with hostapd you will only can use the sample attack with airbase-ng and you can go directly to ----> Step 3.
+If your card is not compatible with hostapd you will only be able to use the simple attack with airbase-ng and you can jump directly to ----> Step 3.
 
-For user which have a compatible wifi card with hostapd.First remover older version of hostapd
-
+For those who have a wifi card compatible with hostapd, you must first remove any older version of hostapd
+```bash
 apt-get remove hostapd
-
+```
 Then download the latest version and compile it:
+```bash
+wget https://w1.fi/cgit/hostap/snapshot/hostap_2_9.tar.gz
 
-https://w1.fi/cgit/hostap/  (version hostapd-2.6 or later is recommended to work with hostbase)
+tar -zxf hostap_2_9.tar.gz
 
-tar -zxf hostapd-2.6.tar.gz
-
-cd /root/hostapd-2.6/hostapd
+cd /root/hostap_2_9/hostapd
 
 cp defconfig .config
 
@@ -109,82 +89,66 @@ CONFIG_FULL_DYNAMIC_VLAN=y
 CONFIG_TLSV11=y
 
 CONFIG_TAXONOMY=y
-
-
-Then finish with
-
+```
+Then finish installation with
+```bash
 sudo make
-
 sudo make install
+```
+### Step 3_______________________________________________________
 
+Install dependencies
+```bash
+sudo apt install ruby ruby-dev libgtk2.0-dev gobject-introspection ruby-gtk2 mdk4
+```
+You also need to install the following ruby gems:
+```bash
+gem install highline rake bundler
+```
 
-
-
-
-Step 3_______________________________________________________
-
-Then you need to install the following ruby gems:
-
-apt-get install ruby
-
-apt-get install ruby-dev
-
-gem install highline
-
-gem install rake
-
-gem install bundler
-
-apt-get install libgtk2.0-dev
-
-gem install gtk2
-
-
-
-
-Step 4________________________________________________________
+### Step 4________________________________________________________
 
 Apache2 settings
 
-Copy/paste the file 000-default.conf into /etc/apache2/site-available.
+Copy/paste the file `000-default.conf` into `/etc/apache2/site-available`
 
-Copy/paste the file apache2.conf into /etc/apache2
+Copy/paste the file `apache2.conf` into `/etc/apache2`
 
-Download the french fake pages and place all them into /etc: https://github.com/Koala633/hostbase/blob/master/pagess.tar.gz
+Download the french fake pages and place all them into `/etc`
 
-WARNING: There is no england phishing page at the moment, to use the fake page of your country you will need to edit the filter in check.rb line 54.Actually you can enter on the phishing page field one of the following pages:
+WARNING: There is no phishing page in English for the moment.  To use a fake page for your country you will need to edit the filter in check.rb line 54.
+Actually you can enter on the phishing page field one of the following pages:
 livebox or bbox or free or sfr.
 
-REMEMBER you will have to adapt the file check.rb line 54 if you want to put your own phishing page.
+REMEMBER you will have to adapt the file check.rb line 54 if you want to use your own phishing page.
 
 
 
 
-Step 5________________________________________________________
+### Step 5________________________________________________________
 
 The begining:
 
-Copy/paste the folder of hostbase-1.1 into /tmp.
-Go to /tmp/hostbase-1.1 and launch it: 
-
+Copy/paste the folder of hostbase-1.3 into `/tmp`.
+Go to `/tmp/hostbase-1.3FR` and launch it: 
+```bash
 ruby hostbase.rb
-
+```
 WARNING: you have to start with the network scan --> discover the network
 
-Network-manager CAN CAUSE TROUBLE with hostapd so in the same time we are doing the network scan we stop it.
+Network-manager CAN CAUSE TROUBLE with hostapd so you need to disable/stop it. 
 
-Don't forget to leave the programe by ctrl+c on the main hostbase terminal.
+Don't forget to leave thostbase with ctrl+c on the main hostbase terminal.
 
 Leaving the program by ctrl+c, files are cleaned and network manager is restarted so if you want to do some other test without make a network scan each time, just stop network-manager before relaunch hostbase:
-
+```bash
 systemctl stop NetworkManager.service
-
 systemctl disable NetworkManager.service
-
+```
 
 REMEMBER: if network-manager is running when you are using hostbase you will have some problems
 
-More information: https://github.com/Koala633/hostbase/blob/master/hostbaseEnglishVersion/RogueAPparty.pdf
+More information: [hostbase/Legacy/hostbaseEnglishVersion/RogueAPparty.pdf](RogueAPparty.pdf)
 
 
 --> Not for beginner usage <--
